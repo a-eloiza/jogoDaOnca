@@ -1,9 +1,30 @@
 #include "heuristica.h"
 
+// ============================================================
+// FUNCOES AUXILIARES QUE PROVAVELMENTE DEVEM ESTAR NO JOGO.C
+// ============================================================
+
+#define POS(l,c) ((l) * 8 + (c)) // do controlador.c
+
+// do controlador.c
+int pos_valida (int l, int c) {
+    if(l < 1 || l > 7 || c < 1 || c > 5)
+        return 0;
+    if(l == 6 && (c == 1 || c == 5))
+        return 0;
+    if(l == 7 && (c == 2 || c == 4))
+        return 0;
+    return 1;
+}
+
+// gera movimentos possivels
+// libera movimentos
+// ============================================================
+
 int encontrar_peca (char *tabuleiro, char peca, int *linha, int *coluna) {
     for (int l = 1; l <= 7; l++) {
         for (int c = 1; c <= 5; c++) {
-            if (pos_valida (1, c)) {
+            if (pos_valida (l, c)) {
                 if (tabuleiro[POS(1, c)] == peca) {
                     *linha = l;
                     *coluna = c;
