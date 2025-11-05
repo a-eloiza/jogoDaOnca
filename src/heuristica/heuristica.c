@@ -83,7 +83,7 @@ int heuristica (char *tabuleiro) {
         return VITORIA_ONCA;
 
     int mobilidade_onca = calcular_mobilidade_onca (tabuleiro);
-    if (mobilidade == 0)
+    if (mobilidade_onca == 0)
         return VITORIA_CAES;
 
     int pontuacao = (14 - caes_restantes) * PESO_CAPTURA;
