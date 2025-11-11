@@ -1,5 +1,43 @@
 #include "jogo.h"
 
+/* ------------------ Comunicação e inicialização ------------------ */
+redisContext* iniciar(int argc, char **argv, char *lado, int *jogadas, char *tempo) {
+    redisContext *rediscontext;
+    char *ip;
+    int porta;
+    
+    if(argc < 4) {
+        printf("formato:\n");
+        printf("         %s lado jogadas tempo [ip porta]\n\n", argv[0]);
+        printf("   lado: indica que lado inicia o jogo, os valores possívies são o ou c\n");
+        printf("   jogadas: número máximo do jogadas na partida\n");
+        printf("   tempo: limite em segundos para cada jogada, 0 indica sem limite\n");
+        printf("   ip: parâmetro opcional que indica o ip ou o hostname do servidor redis\n");
+        printf("       o valor default é 127.0.0.1\n");
+        printf("   porta: parâmetro opcional que indica a porta do servidor redis\n");
+        printf("          o valor default é 10001\n");
+        exit(1);
+    }
+    
+    *lado = argv[1][0];
+    *jogadas = atoi(argv[2]);
+    strcpy(tempo, argv[3]);
+    ip = (argc > 4) ? argv[4] : "127.0.0.1";
+    porta = (argc > 5) ? atoi(argv[5]) : 10001;
+    
+    rediscontext = redisConnect(ip, porta);
+    if (rediscontext == NULL || rediscontext->err) {
+        if(rediscontext) {
+        printf("Erro ao conectar com o servidor redis: %s\n", rediscontext->errstr);
+        exit(1);
+        } else {
+        printf("Não foi possível conectar com o servidor redis\n");
+        }
+    }
+    return rediscontext;
+} 
+
+/* ------------------ Interpretação de jogadas ------------------ */
 int interpretar_jogada(char *entrada, char *lado_jogador, char *tipo_jogada, int *num_mov, int *linhas_mov, int *colunas_mov) {
     int i, p;
     char *s;
@@ -50,6 +88,7 @@ int interpretar_jogada(char *entrada, char *lado_jogador, char *tipo_jogada, int
     return 1;
 }
 
+/* ------------------ Regras e validação ------------------ */
 int eh_posicao_valida(int linha, int coluna) {
     if (linha < LINHA_INICIAL_TABULEIRO || linha > LINHA_FINAL_TABULEIRO || coluna < COLUNA_INICIAL_TABULEIRO || coluna > COLUNA_FINAL_TABULEIRO)
         return 0;
@@ -189,18 +228,14 @@ int eh_vencedor(char lado_jogador, char *tabuleiro) {
     int linha, coluna, num_cachorros, i, j;
 
     if (lado_jogador == LADO_ONCA) {
-        num_cachorros = 0;
-        for (linha = 1; linha < 8; linha++)
-            for (coluna = 1; coluna < 6; coluna++)
-                if (tabuleiro[POS(linha, coluna)] == LADO_CACHORROS)
-            num_cachorros++;
-        if (num_cachorros > 9)
+        num_cachorros = contar_cachorros(tabuleiro);
+        if (num_cachorros > NUM_CACHORROS_VITORIA_ONCA)
             return 0;
         return 1;
     }
 
-    for (linha = 1; linha < 8; linha++)
-        for (coluna = 1; coluna < 6; coluna++)
+    for (linha = LINHA_INICIAL_TABULEIRO; linha <= LINHA_FINAL_TABULEIRO; linha++)
+        for (coluna = COLUNA_INICIAL_TABULEIRO; coluna <= COLUNA_FINAL_TABULEIRO; coluna++)
             if (tabuleiro[POS(linha, coluna)] == LADO_ONCA) {
                 for (i = -1; i <= 1; i++)
                     for (j = -1; j <= 1; j++)
@@ -215,4 +250,20 @@ int eh_vencedor(char lado_jogador, char *tabuleiro) {
                 return 1;
             }
     return 0;
+}
+
+/* ------------------ Utilitários ------------------ */
+int contar_cachorros(char *tabuleiro) {
+    int num_cachorros = 0;
+    for (int linha = LINHA_INICIAL_TABULEIRO; linha <= LINHA_FINAL_TABULEIRO; linha++) {
+        for (int coluna = COLUNA_INICIAL_TABULEIRO; coluna <= COLUNA_FINAL_TABULEIRO; coluna++) {
+            if (tabuleiro[POS(linha, coluna)] == LADO_CACHORROS) {
+                num_cachorros++;
+            }
+        }
+    }
+}
+
+void imprimir_tabuleiro(char *tabuleiro) {
+    printf("%s\n", tabuleiro);
 }

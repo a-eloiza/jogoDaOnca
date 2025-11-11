@@ -8,7 +8,7 @@ redisReply *redisreply;
 char tabuleiro_lado;
 char key[16];
 
-void tabuleiro_conecta(int argc, char **argv) {
+void conectar_tabuleiro(int argc, char **argv) {
     char *ip;
     int porta;
 
@@ -39,13 +39,13 @@ void tabuleiro_conecta(int argc, char **argv) {
     }
 }
 
-void tabuleiro_envia(char *buffer) {
+void enviar_tabuleiro(char *buffer) {
     sprintf(key, "jogada_%c", tabuleiro_lado);
     redisreply = redisCommand(rediscontext, "RPUSH %s %s", key, buffer);
     freeReplyObject(redisreply);
 }
 
-void tabuleiro_recebe(char *buffer) {
+void receber_tabuleiro(char *buffer) {
     sprintf(key, "tabuleiro_%c", tabuleiro_lado);
     redisreply = redisCommand(rediscontext, "BLPOP %s 0", key);
     strcpy(buffer, redisreply->element[1]->str);

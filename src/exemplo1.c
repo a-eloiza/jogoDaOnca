@@ -18,10 +18,10 @@ int main(int argc, char **argv) {
   int i;
 
   // conecta com o controlador do campo
-  tabuleiro_conecta(argc, argv);
+  conectar_tabuleiro(argc, argv);
 
   // recebe o campo inicial e o movimento do adversario
-  tabuleiro_recebe(buf);
+  receber_tabuleiro(buf);
 
   // separa os elementos do string recebido
   sscanf(strtok(buf, " \n"), "%c", &lado_meu);
@@ -64,5 +64,5 @@ int main(int argc, char **argv) {
     sprintf(buf, "c m 3 5 4 4\n");
 
   // envia o movimento para o controlador do campo
-  tabuleiro_envia(buf);  
+  enviar_tabuleiro(buf);  
 }

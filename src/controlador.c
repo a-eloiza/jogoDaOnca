@@ -6,43 +6,7 @@
 #include "jogo/jogo.h"
 
 #define MAXSTR 512
-#define MAXINT 16
-
-redisContext* iniciar(int argc, char **argv, char *lado, int *jogadas, char *tempo) {
-    redisContext *rediscontext;
-    char *ip;
-    int porta;
-    
-    if(argc < 4) {
-        printf("formato:\n");
-        printf("         %s lado jogadas tempo [ip porta]\n\n", argv[0]);
-        printf("   lado: indica que lado inicia o jogo, os valores possívies são o ou c\n");
-        printf("   jogadas: número máximo do jogadas na partida\n");
-        printf("   tempo: limite em segundos para cada jogada, 0 indica sem limite\n");
-        printf("   ip: parâmetro opcional que indica o ip ou o hostname do servidor redis\n");
-        printf("       o valor default é 127.0.0.1\n");
-        printf("   porta: parâmetro opcional que indica a porta do servidor redis\n");
-        printf("          o valor default é 10001\n");
-        exit(1);
-    }
-    
-    *lado = argv[1][0];
-    *jogadas = atoi(argv[2]);
-    strcpy(tempo, argv[3]);
-    ip = (argc > 4) ? argv[4] : "127.0.0.1";
-    porta = (argc > 5) ? atoi(argv[5]) : 10001;
-    
-    rediscontext = redisConnect(ip, porta);
-    if (rediscontext == NULL || rediscontext->err) {
-        if(rediscontext) {
-        printf("Erro ao conectar com o servidor redis: %s\n", rediscontext->errstr);
-        exit(1);
-        } else {
-        printf("Não foi possível conectar com o servidor redis\n");
-        }
-    }
-    return rediscontext;
-}  
+#define MAXINT 16 
 
 int main(int argc, char **argv) {
     redisContext *contexto_redis;
@@ -60,22 +24,14 @@ int main(int argc, char **argv) {
     int colunas_mov[MAXINT];
     int jogadas_restantes;
     int ok;
-    char tabuleiro_atual[MAXSTR] =
-        "#######\n"
-        "#ccccc#\n"
-        "#ccccc#\n"
-        "#ccocc#\n"
-        "#-----#\n"
-        "#-----#\n"
-        "# --- #\n"
-        "#- - -#\n"
-        "#######\n";
+    char tabuleiro_atual[MAXSTR] = TABULEIRO_INICIAL;
     
     contexto_redis = iniciar(argc, argv, &jogador_atual, &jogadas_restantes, tempo_espera);
   
     vencedor = ' ';
   
-    printf("%d:\n%s", jogadas_restantes, tabuleiro_atual);
+    printf("%d:\n", jogadas_restantes);
+    imprimir_tabuleiro(tabuleiro_atual);
 
     sprintf(mensagem_envio, "%c\n%c n\n%s", jogador_atual, OUTRO(jogador_atual), tabuleiro_atual);
 
@@ -103,7 +59,7 @@ int main(int argc, char **argv) {
             sprintf(jogada_str, "%c n", jogador_atual);
 
         printf("%d: %s\n", jogadas_restantes, jogada_str);
-        printf("%s", tabuleiro_atual);
+        imprimir_tabuleiro(tabuleiro_atual);
 
         if (eh_vencedor(jogador_atual, tabuleiro_atual)) {
             printf("%d: vitória de %c\n", jogadas_restantes, jogador_atual);

@@ -11,16 +11,16 @@ int main(int argc, char **argv) {
   char buf[MAXSTR];
   char *linha;
   
-  tabuleiro_conecta(argc, argv);
+  conectar_tabuleiro(argc, argv);
 
   while(1) {
-    tabuleiro_recebe(buf);
+    receber_tabuleiro(buf);
     printf("%s", buf);
     linha = readline(NULL);
     if(linha[0] == '0')
       break;
     sprintf(buf, "%s\n", linha);
     free(linha);
-    tabuleiro_envia(buf);
+    enviar_tabuleiro(buf);
   }
 }
