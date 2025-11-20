@@ -6,17 +6,6 @@
 
 #define POS(l,c) ((l) * 8 + (c)) // do controlador.c
 
-// do controlador.c
-int pos_valida (int l, int c) {
-    if(l < 1 || l > 7 || c < 1 || c > 5)
-        return 0;
-    if(l == 6 && (c == 1 || c == 5))
-        return 0;
-    if(l == 7 && (c == 2 || c == 4))
-        return 0;
-    return 1;
-}
-
 // gera movimentos possivels
 // libera movimentos
 // ============================================================
@@ -24,7 +13,7 @@ int pos_valida (int l, int c) {
 int encontrar_peca (char *tabuleiro, char peca, int *linha, int *coluna) {
     for (int l = 1; l <= 7; l++) {
         for (int c = 1; c <= 5; c++) {
-            if (pos_valida (l, c)) {
+            if (eh_posicao_valida (l, c)) {
                 if (tabuleiro[POS(1, c)] == peca) {
                     *linha = l;
                     *coluna = c;
@@ -40,7 +29,7 @@ int contar_caes (char *tabuleiro) {
     int count = 0;
     for (int l = 1; l <= 7; l++) {
         for (int c = 1; c <= 5; c++) {
-            if (pos_valida (l, c) && tabuleiro[POS(l, c)] == 'c')
+            if (eh_posicao_valida (l, c) && tabuleiro[POS(l, c)] == 'c')
                 count++;
         }
     }
@@ -55,7 +44,7 @@ int calcular_cerco (char *tabuleiro) {
     int cerco_total = 0;
     for (int l = 1; l <= 7; l++) {
         for (c = 1; c <= 5; c++) {
-            if (pos_valida (l, c) && tabuleiro[POS(l, c)] == 'c') {
+            if (eh_posicao_valida (l, c) && tabuleiro[POS(l, c)] == 'c') {
                 int dist = abs (l - l_onca) + abs (c - c_onca);
                 if (dist > 0)
                     cerco_total += (100 / dist);

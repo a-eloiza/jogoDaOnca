@@ -2,7 +2,8 @@
 #define __HEURISTICA_H__
 
 #include <stdlib.h>
-#include "jogo.h"
+#include <math.h>
+#include "../jogo/jogo.h"
 
 #define VITORIA_ONCA  999999
 #define VITORIA_CAES -999999
