@@ -216,3 +216,48 @@ int eh_vencedor(char lado_jogador, char *tabuleiro) {
             }
     return 0;
 }
+
+void ler_mensagem(char *buf, char *lado_meu, char *lado_adv, char *tabuleiro) {
+    char *token;
+    char tipo_mov_adv;
+    int num_mov_adv, i;
+
+    token = strtok(buf, " \n");
+    sscanf(token, "%c", lado_meu);
+
+    token = strtok(NULL, " \n");
+    sscanf(token, "%c", lado_adv);
+
+    token = strtok(NULL, " \n");
+    tipo_mov_adv = token[0];
+
+    if (tipo_mov_adv == TIPO_MOVIMENTO_UNICO) {
+        strtok(NULL, " \n"); strtok(NULL, " \n"); 
+        strtok(NULL, " \n"); strtok(NULL, " \n");
+    } 
+    else if (tipo_mov_adv == TIPO_SEQUENCIA) {
+        sscanf(strtok(NULL, " \n"), "%d", &num_mov_adv);
+        for (i = 0; i <= num_mov_adv; i++) {
+            strtok(NULL, " \n"); 
+            strtok(NULL, " \n");
+        }
+    }
+
+    strncpy(tabuleiro, strtok(NULL, "."), TAMANHO_BUFFER_TABULEIRO - 1);
+}
+
+void formatar_jogada(char *buf_envio, char lado, jogada_t jogada) {
+    int pos = 0;
+
+    pos += sprintf(buf_envio, "%c %c", lado, jogada.tipo);
+
+    if (jogada.tipo == TIPO_SEQUENCIA) {
+        pos += sprintf(buf_envio + pos, " %d", jogada.num_mov);
+    }
+
+    for (int i = 0; i <= jogada.num_mov; i++) {
+        pos += sprintf(buf_envio + pos, " %d %d", jogada.linhas[i], jogada.colunas[i]);
+    }
+    
+    strcat(buf_envio, "\n");
+}
