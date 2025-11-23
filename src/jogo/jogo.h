@@ -36,5 +36,6 @@ int aplicar_jogada(char *tabuleiro_resultante, char *tabuleiro_inicial, char lad
 int eh_vencedor(char lado_jogador, char *tabuleiro);
 void ler_mensagem(char *buf, char *lado_meu, char *lado_adv, char *tabuleiro);
 void formatar_jogada(char *buf_envio, char lado, jogada_t jogada);
+int gerar_movimentos(char *tabuleiro, char meu_lado, jogada_t lista_jogadas[]);
 
 #endif

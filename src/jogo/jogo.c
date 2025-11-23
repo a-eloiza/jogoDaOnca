@@ -261,3 +261,92 @@ void formatar_jogada(char *buf_envio, char lado, jogada_t jogada) {
     
     strcat(buf_envio, "\n");
 }
+
+int gerar_movimentos(char *tabuleiro, char meu_lado, jogada_t lista_jogadas[]) {
+    int linha, coluna, i, j;
+    int num_jogadas = 0;
+
+    for (linha = LINHA_INICIAL_TABULEIRO; linha <= LINHA_FINAL_TABULEIRO; linha++) {
+        for (coluna = COLUNA_INICIAL_TABULEIRO; coluna <= COLUNA_FINAL_TABULEIRO; coluna++) {
+
+            int pos = POS(linha, coluna);
+            if (tabuleiro[pos] != meu_lado)
+                continue;
+
+            // Movimentos simples
+            for (i = -1; i <= 1; i++) {
+                for (j = -1; j <= 1; j++) {
+                    if (i == 0 && j == 0) { 
+                        continue;
+                    }
+
+                    int l2 = linha + i;
+                    int c2 = coluna + j;
+
+                    if (!eh_posicao_valida(l2, c2))
+                        continue;
+
+                    if (tabuleiro[POS(l2, c2)] != '-')
+                        continue;
+
+                    if (!eh_movimento_possivel(TIPO_MOVIMENTO_UNICO, linha, coluna, l2, c2))
+                        continue;
+
+                    jogada_t nova;
+                    nova.tipo = TIPO_MOVIMENTO_UNICO;
+                    nova.num_mov = 1;
+                    nova.linhas[0] = linha;
+                    nova.colunas[0] = coluna;
+                    nova.linhas[1] = l2;
+                    nova.colunas[1] = c2;
+                    nova.valor = 0;
+
+                    lista_jogadas[num_jogadas++] = nova;
+                }
+            }
+
+            // Saltos da onça
+            if (meu_lado == LADO_ONCA) {
+                for (i = -2; i <= 2; i++) {
+                    for (j = -2; j <= 2; j++) {
+                        if (i == 0 && j == 0) continue;
+
+                        int l2 = linha + i;
+                        int c2 = coluna + j;
+
+                        if (!eh_posicao_valida(l2, c2))
+                            continue;
+
+                        int l_meio = (linha + l2) / 2;
+                        int c_meio = (coluna + c2) / 2;
+
+                        if (!eh_posicao_valida(l_meio, c_meio))
+                            continue;
+
+                        if (tabuleiro[POS(l_meio, c_meio)] != LADO_CACHORROS)
+                            continue;
+
+                        if (tabuleiro[POS(l2, c2)] != '-')
+                            continue;
+
+                        if (!eh_movimento_possivel(TIPO_SEQUENCIA, linha, coluna, l2, c2))
+                            continue;
+
+                        jogada_t nova;
+                        nova.tipo = TIPO_SEQUENCIA;
+                        nova.num_mov = 1;
+                        nova.linhas[0] = linha;
+                        nova.colunas[0] = coluna;
+                        nova.linhas[1] = l2;
+                        nova.colunas[1] = c2;
+                        nova.valor = 0;
+
+                        lista_jogadas[num_jogadas++] = nova;
+                    }
+                }
+            }
+        }
+    }
+
+    return num_jogadas;
+}

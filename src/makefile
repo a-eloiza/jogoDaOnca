@@ -5,7 +5,7 @@ all: controlador exemplo1 exemplo2
 
 controlador: jogo/jogo.h jogo/jogo.c controlador.c  
 
-exemplo1: tabuleiro/tabuleiro.h tabuleiro/tabuleiro.c exemplo1.c
+exemplo1: tabuleiro/tabuleiro.h tabuleiro/tabuleiro.c jogo/jogo.c exemplo1.c
 
 exemplo2: tabuleiro/tabuleiro.h tabuleiro/tabuleiro.c exemplo2.c
 
