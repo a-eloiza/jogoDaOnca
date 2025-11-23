@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "heuristica.h": "c",
-        "stdio.h": "c",
-        "minimax.h": "c"
-    }
-}
