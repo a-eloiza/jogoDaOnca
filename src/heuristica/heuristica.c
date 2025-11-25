@@ -1,20 +1,10 @@
 #include "heuristica.h"
 
-// ============================================================
-// FUNCOES AUXILIARES QUE PROVAVELMENTE DEVEM ESTAR NO JOGO.C
-// ============================================================
-
-#define POS(l,c) ((l) * 8 + (c)) // do controlador.c
-
-// gera movimentos possivels
-// libera movimentos
-// ============================================================
-
 int encontrar_peca (char *tabuleiro, char peca, int *linha, int *coluna) {
     for (int l = 1; l <= 7; l++) {
         for (int c = 1; c <= 5; c++) {
             if (eh_posicao_valida (l, c)) {
-                if (tabuleiro[POS(1, c)] == peca) {
+                if (tabuleiro[POS(l, c)] == peca) {
                     *linha = l;
                     *coluna = c;
                     return 1;
@@ -55,15 +45,9 @@ int calcular_cerco (char *tabuleiro) {
 }
 
 int calcular_mobilidade_onca (char *tabuleiro) {
-    char **movimentos = gerar_movimentos_possiveis (tabuleiro, 'o');
-    int count = 0;
-
-    if (movimentos) {
-        for (int i = 0; movimentos[i] != NULL; i++)
-            count++;
-        liberar_movimentos (movimentos);
-    }
-    return count;
+    jogada_t lista_jogadas[MAX_JOGADAS_BUFFER];
+    int qtd_movimentos = gerar_movimentos(tabuleiro, LADO_ONCA, lista_jogadas);
+    return qtd_movimentos;
 }
 
 int heuristica (char *tabuleiro) {

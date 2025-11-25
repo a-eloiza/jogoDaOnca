@@ -10,6 +10,8 @@
 #define PESO_CAPTURA    1000
 #define PESO_MOBILIDADE   50
 #define PESO_CERCO         1
+#define MAX_JOGADAS_BUFFER 200
+#define POS(l,c) ((l) * 8 + (c)) // do controlador.c
 
 int encontrar_peca (char *tabuleiro, char peca, int *linha, int *coluna);
 
