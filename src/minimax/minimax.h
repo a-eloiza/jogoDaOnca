@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../heuristica/heuristica.h"
+#include "heuristica/heuristica.h"
 
 #define INFINITO 2000000
 #define MAX_PROFUNDIDADE 6
