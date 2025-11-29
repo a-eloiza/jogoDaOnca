@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include "../jogo/jogo.h"
+#include "jogo/jogo.h"
 
 #define VITORIA_ONCA  999999
 #define VITORIA_CAES -999999
@@ -11,7 +11,6 @@
 #define PESO_MOBILIDADE   50
 #define PESO_CERCO         1
 #define MAX_JOGADAS_BUFFER 200
-#define POS(l,c) ((l) * 8 + (c)) // do controlador.c
 
 int encontrar_peca (char *tabuleiro, char peca, int *linha, int *coluna);
 

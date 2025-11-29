@@ -33,7 +33,7 @@ int calcular_cerco (char *tabuleiro) {
 
     int cerco_total = 0;
     for (int l = 1; l <= 7; l++) {
-        for (c = 1; c <= 5; c++) {
+        for (int c = 1; c <= 5; c++) {
             if (eh_posicao_valida (l, c) && tabuleiro[POS(l, c)] == 'c') {
                 int dist = abs (l - l_onca) + abs (c - c_onca);
                 if (dist > 0)
