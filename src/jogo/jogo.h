@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "heuristica/heuristica.h"
 
 #define LADO_ONCA 'o'
 #define LADO_CACHORROS 'c'
@@ -17,16 +18,17 @@
 
 #define OUTRO(lado) ((lado) == LADO_ONCA ? LADO_CACHORROS : LADO_ONCA)
 #define POS(linha, coluna) ((linha) * 8 + (coluna))
-#define ABS(x) ((x < 0)?(-(x)):(x))
+#define ABS(x) ((x < 0) ? (-(x)) : (x))
 
 #define MAXINT 16
 #define TAMANHO_BUFFER_TABULEIRO 512
-typedef struct {
+typedef struct
+{
     char tipo;
     int num_mov;
     int linhas[MAXINT];
     int colunas[MAXINT];
-    int valor;           
+    int valor;
 } jogada_t;
 
 int interpretar_jogada(char *entrada, char *lado_jogador, char *tipo_jogada, int *num_mov, int *linhas_mov, int *colunas_mov);

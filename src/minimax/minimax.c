@@ -10,7 +10,7 @@ int calcula_MIN (char *tabuleiro, int alpha, int beta, int profundidade){
     if (teste_terminal(profundidade, tabuleiro))
         return heuristica(tabuleiro);
 
-    jogada_t lista_jogadas[MAX_MOVIMENTOS_POSSIVEIS];
+    jogada_t lista_jogadas[MAX_JOGADAS_BUFFER];
     char tabuleiro_temp[TAMANHO_BUFFER_TABULEIRO];
         
     int qtd = gerar_movimentos(tabuleiro, LADO_CACHORROS, lista_jogadas);
@@ -36,7 +36,7 @@ int calcula_MAX (char *tabuleiro, int alpha, int beta, int profundidade){
         return heuristica(tabuleiro);
 
     int nota = -INFINITO;
-    jogada_t lista_jogadas[MAX_MOVIMENTOS_POSSIVEIS];
+    jogada_t lista_jogadas[MAX_JOGADAS_BUFFER];
     char tabuleiro_temp[TAMANHO_BUFFER_TABULEIRO];
 
     int qtd = gerar_movimentos(tabuleiro, LADO_ONCA, lista_jogadas);
@@ -57,7 +57,7 @@ int calcula_MAX (char *tabuleiro, int alpha, int beta, int profundidade){
 }
 
 jogada_t minimax (char *tabuleiro, char meu_lado){
-    jogada_t lista_jogadas[MAX_MOVIMENTOS_POSSIVEIS];
+    jogada_t lista_jogadas[MAX_JOGADAS_BUFFER];
     char tabuleiro_temp[TAMANHO_BUFFER_TABULEIRO];
     
     int alpha = -INFINITO;
@@ -70,6 +70,8 @@ jogada_t minimax (char *tabuleiro, char meu_lado){
         melhor_jogada.num_mov = 0;
         return melhor_jogada;
     }
+
+    melhor_jogada = lista_jogadas[0];
     
     if (meu_lado == LADO_ONCA) 
         melhor_jogada.valor = -INFINITO;
