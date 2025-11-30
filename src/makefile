@@ -11,8 +11,10 @@ controlador: jogo/jogo.c controlador.c
 	$(CC) $(CFLAGS)  controlador.c jogo/jogo.c -o controlador $(LDLIBS)
 
 exemplo1: tabuleiro/tabuleiro.c jogo/jogo.c exemplo1.c
+	$(CC) $(CFLAGS)  tabuleiro/tabuleiro.c jogo/jogo.c exemplo1.c $(LDLIBS)
 
-exemplo2: tabuleiro/tabuleiro.c exemplo2.c
+exemplo2: tabuleiro/tabuleiro.c jogo/jogo.c exemplo2.c
+	$(CC) $(CFLAGS)  tabuleiro/tabuleiro.c exemplo2.c $(LDLIBS)
 
 clean:
 	rm -f controlador exemplo1 exemplo2 jogador
