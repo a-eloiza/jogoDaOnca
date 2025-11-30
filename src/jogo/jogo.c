@@ -42,9 +42,9 @@ int interpretar_jogada(char *entrada, char *lado_jogador, char *tipo_jogada, int
     p += sprintf(&(entrada[p]), "%c %c", *lado_jogador, *tipo_jogada);
     
     if (*tipo_jogada == TIPO_SEQUENCIA)
-        p += sprintf(&(entrada[p]), " %d", *num_mov - 1);
+        p += sprintf(&(entrada[p]), " %d", *num_mov);
     
-    for (i = 0; i < *num_mov; i++)
+    for (i = 0; i <= *num_mov; i++)
         p += sprintf(&(entrada[p]), " %d %d", linhas_mov[i], colunas_mov[i]);
     
     return 1;
