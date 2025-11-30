@@ -65,8 +65,11 @@ jogada_t minimax (char *tabuleiro, char meu_lado){
     jogada_t melhor_jogada;
 
     int qtd_jogadas = gerar_movimentos(tabuleiro, meu_lado, lista_jogadas);
-    if (qtd_jogadas == 0) melhor_jogada.num_mov = 0;
-
+    
+    if (qtd_jogadas == 0) {
+        melhor_jogada.num_mov = 0;
+        return melhor_jogada;
+    }
     
     if (meu_lado == LADO_ONCA) 
         melhor_jogada.valor = -INFINITO;

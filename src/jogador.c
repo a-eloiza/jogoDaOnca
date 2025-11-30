@@ -15,8 +15,6 @@ int main(int argc, char **argv){
     char tabuleiro[TAMANHO_BUFFER_TABULEIRO];     
     char lado_meu;              
     char lado_adv;
-    char tipo_mov_adv;
-    int num_mov_adv;
 
     tabuleiro_conecta(argc, argv);
 
@@ -26,6 +24,11 @@ int main(int argc, char **argv){
 
         ler_mensagem(buf, &lado_meu, &lado_adv, tabuleiro);
 
+        #if DEBUG
+            printf("\n--- Minha Vez (%c) ---\n", lado_meu);
+            printf("Tabuleiro recebido: \n%s\n", tabuleiro);
+        #endif
+
         venceu_onca = eh_vencedor(LADO_ONCA, tabuleiro);
         venceu_cao = eh_vencedor(LADO_CACHORROS, tabuleiro);
 
@@ -34,7 +37,7 @@ int main(int argc, char **argv){
         formatar_jogada(buf_envio, lado_meu, jogada);
 
         #if DEBUG
-            printf(" - jogador: %c --- tabuleiro: %s", lado_meu, buf_envio);
+            printf(" - jogador: %c vai mandar: --- tabuleiro: %s", lado_meu, buf_envio);
         #endif
 
         tabuleiro_envia(buf_envio); 
