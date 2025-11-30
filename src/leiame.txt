@@ -1,0 +1,48 @@
+EQUIPE:
+Eloíza Sthefanny Cardoso    GRR20235165
+Helen Kaori Iijima          GRR20235160
+Nathalia Nogueira Alves     GRR
+
+===============================================================================
+          ORGANIZACAO DO CODIGO
+===============================================================================
+O diretorio heuristica contem uma biblioteca (.c e .h) que implementa uma
+heuristica para ambos os lados do jogo.
+
+Os arquivos no diretorio jogo contem implementacoes de funcoes que ajudam na
+interpretacao do tabuleiro, verificacao de vencedor, geracao de jogadas
+possiveis, verificacao de jogadas e movimentacoes possiveis e formatacao da
+string de jogada.
+
+Os arquivos no diretorio minimax contem a implementacao do minimax com poda
+alpha e beta.
+
+===============================================================================
+          HEURISTICA
+===============================================================================
+A heuristica eh a mesma para ambos os lados. A onca eh favorecida com valores
+positivos, enquanto os caes sao favorecidos com valores negativos.
+
+A heuristica primeiro calcula o numero de caes restantes no tabuleiro. Se 5 ou
+mais caes foram "comidos", entao a vitoria eh da onca e a heuristica retorna
+um valor "+infinito", ou seja, um valor muito grande.
+Apos isso, a heuristica calcula o numero de movimentacoes possiveis para a onca.
+Se este valor for 0, entao os cachorros vencem e a heuristica retorna um valor
+muito baixo, ou seja "-infinito".
+Por fim, se nenhum dos lados venceu, a heuristica retorna uma conta ponderada:
+
+    (cap * peso_cap) + (mob * peso_mob) - (cerco * peso_cerco)
+
+sendo:
+    cap = numero de caes capturados
+    peso_cap = 1000
+    mob = mobilidade da onca
+    peso_mob = 50
+    cerco = cerco dos caes em volta da onca
+    peso_certo = 1
+
+Como a captura tem o maior peso, as jogadas em que a onca captura um cao vao
+ser muito beneficos para a onca, enquanto o lado dos caes vai tentar evitar
+ao maximo qualquer escolha que possa resultar na captura de um cao.
+Assim, essa heuristica funciona para ambos os lados, onde a onca eh sempre
+o max e os caes sao sempre o min.
